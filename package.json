@@ -3,15 +3,19 @@
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "jonhks <jonathan@laboratoria.la>",
+  "homepage": "https://github.com/Jonhks/todo-list-vue",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "deploy": "node ./node_modules/vue-gh-pages/index.js"
   },
   "dependencies": {
+    "firebase": "^5.9.2",
     "gh-deploy": "^0.2.3",
-    "vue": "^2.5.2"
+    "vue": "^2.5.2",
+    "vue-gh-pages": "^1.19.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

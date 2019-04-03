@@ -155,13 +155,29 @@ export default {
       this.newTodo = "";
       this.idTodo++;
       M.toast({ html: "Tarea guardada con éxito!" });
+
+      window.db
+        .collection("users")
+        .add({
+        id: this.idTodo,
+        title: this.newTodo,
+        completed: false,
+        editing: false,
+        date: this.hour
+        })
+        .then(function(docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+          console.error("Error adding document: ", error);
+        });
     },
     editTodo(todo) {
       todo.editing = true;
     },
     doneEdit(todo) {
       todo.editing = false;
-      M.toast({ html: "Tarea editada exitosamente!"});
+      return;
     },
     removeTodo(index) {
       M.toast({ html: `Se ha eliminado la tarea ${index} con éxtito` });
@@ -188,19 +204,6 @@ export default {
   color: #41b883;
 }
 
-.todo-item-edit {
-  font-size: 24px;
-  color: #2c2c50;
-  margin-left: 12px;
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-}
-
-.todo-item-edit:focus {
-  overflow-inline: none;
-}
-
 .input:hover {
   cursor: pointer;
 }
@@ -210,6 +213,10 @@ export default {
 }
 
 .btn-2:hover {
+  background-color: #35495e;
+}
+
+.mi-nav {
   background-color: #35495e;
 }
 </style>

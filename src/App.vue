@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <h3>Todo List Vue.js</h3>
     <img src="./assets/logo.png">
     <!-- <HelloWorld/> -->
     <TodoList/>
@@ -11,12 +10,11 @@
 import HelloWorld from "./components/HelloWorld";
 import TodoList from "./components/TodoList";
 
-
 export default {
   name: "App",
   components: {
     HelloWorld,
-    TodoList
+    TodoList,
   }
 };
 </script>
