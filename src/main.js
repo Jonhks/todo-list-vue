@@ -3,10 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import firebase from "firebase/app";
-import firestore from 'firebase/firestore'
+// import firestore from 'firebase/firestore'
+// Required for side-effects
+require("firebase/firestore");
 
-
-Vue.config.productionTip = false
 
 // Initialize Firebase
 // TODO: Replace with your project's customized code snippet
@@ -21,9 +21,14 @@ Vue.config.productionTip = false
 };
 firebase.initializeApp(config);
 var db = firebase.firestore();
+// db.settings({
+//   timestampsInSnapshots: true
+// })
 window.db = db
 
 
+
+Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({

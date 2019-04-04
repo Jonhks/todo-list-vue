@@ -86,8 +86,9 @@ export default {
   name: "Todo-list",
   data() {
     return {
+      dat: this.created(),
       newTodo: "",
-      idTodo: 3,
+      idTodo: 0,
       hour:
         new Date().getHours() +
         ":" +
@@ -95,34 +96,35 @@ export default {
         ":" +
         new Date().getSeconds() +
         " hrs",
-      Todolist: [
-        {
-          id: 1,
-          title: "Tarea ejemplo uno",
-          completed: false,
-          editing: false,
-          date:
-            new Date().getHours() +
-            ":" +
-            new Date().getMinutes() +
-            ":" +
-            new Date().getSeconds() +
-            " hrs"
-        },
-        {
-          id: 2,
-          title: "Tarea ejemplo dos",
-          completed: false,
-          editing: false,
-          date:
-            new Date().getHours() +
-            ":" +
-            new Date().getMinutes() +
-            ":" +
-            new Date().getSeconds() +
-            " hrs"
-        }
-      ]
+      Todolist: []
+      //   Todolist: [
+      //     {
+      //       id: 1,
+      //       title: "Tarea ejemplo uno",
+      //       completed: false,
+      //       editing: false,
+      //       date:
+      //         new Date().getHours() +
+      //         ":" +
+      //         new Date().getMinutes() +
+      //         ":" +
+      //         new Date().getSeconds() +
+      //         " hrs"
+      //     },
+      //     {
+      //       id: 2,
+      //       title: "Tarea ejemplo dos",
+      //       completed: false,
+      //       editing: false,
+      //       date:
+      //         new Date().getHours() +
+      //         ":" +
+      //         new Date().getMinutes() +
+      //         ":" +
+      //         new Date().getSeconds() +
+      //         " hrs"
+      //     }
+      //   ]
     };
   },
   computed: {
@@ -145,25 +147,15 @@ export default {
       if (this.newTodo.trim().length === 0) {
         return;
       }
-      this.Todolist.push({
-        id: this.idTodo,
-        title: this.newTodo,
-        completed: false,
-        editing: false,
-        date: this.hour
-      });
-      this.newTodo = "";
-      this.idTodo++;
-      M.toast({ html: "Tarea guardada con éxito!" });
-
       window.db
         .collection("users")
         .add({
-        id: this.idTodo,
-        title: this.newTodo,
-        completed: false,
-        editing: false,
-        date: this.hour
+          //   id: this.idTodo++,
+          title: this.newTodo,
+          completed: false,
+          editing: false,
+          date: this.hour,
+          createdAt: new Date(),
         })
         .then(function(docRef) {
           console.log("Document written with ID: ", docRef.id);
@@ -171,6 +163,10 @@ export default {
         .catch(function(error) {
           console.error("Error adding document: ", error);
         });
+      this.newTodo = null;
+      //   this.idTodo++;
+      M.toast({ html: "Tarea guardada con éxito!" });
+      this.fetchMessages();
     },
     editTodo(todo) {
       todo.editing = true;
@@ -180,11 +176,30 @@ export default {
       return;
     },
     removeTodo(index) {
+        console.log(index)
       M.toast({ html: `Se ha eliminado la tarea ${index} con éxtito` });
-      this.Todolist.splice(index, 1);
+    //   this.Todolist.splice(index, 1);
     },
     checkAllTodos() {
       this.Todolist.forEach(todo => (todo.completed = event.target.checked));
+    },
+    fetchMessages() {
+      window.db
+        .collection("users").orderBy('createdAt', "desc")
+        .onSnapshot(querySnapshot => {
+            querySnapshot.forEach(doc => console.log(doc.id))
+        //   let allMessages = [];
+        //   let id = null
+        //   querySnapshot.forEach(doc => {
+        //       console.log(doc)
+        //     allMessages.push(doc.data());
+        //   });
+        //   this.Todolist = allMessages;
+        // this.Todolist = querySnapshot.map(data => console.log(data))
+        });
+    },
+    created() {
+      this.fetchMessages();
     }
   }
 };
